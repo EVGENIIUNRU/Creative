@@ -398,87 +398,133 @@
 
     .photo__layout {
       display: grid;
-      gap: clamp(24px, 5vw, 42px);
+      gap: clamp(24px, 5vw, 44px);
       place-items: center;
     }
 
-    .photo-frame {
-      position: relative;
-      width: min(72vw, 430px);
-      aspect-ratio: 1;
-      padding: clamp(14px, 2.8vw, 22px);
-      border-radius: 6px;
-    }
-
-    .photo-frame::before,
-    .photo-frame::after {
-      position: absolute;
-      inset: 0;
-      content: "";
-      border-radius: 6px;
-      pointer-events: none;
-    }
-
-    .photo-frame::before {
-      border: 1px solid rgba(26, 26, 26, .16);
-    }
-
-    .photo-frame::after {
-      border: 1px dashed rgba(200, 137, 122, .75);
-      animation: frameBreath 5200ms linear infinite;
-    }
-
-    .photo-frame__inside {
+    .photo-spread {
       position: relative;
       display: grid;
-      width: 100%;
-      height: 100%;
-      place-items: center;
-      overflow: hidden;
-      border-radius: 4px;
-      background:
-        linear-gradient(135deg, rgba(255, 250, 241, .82), rgba(235, 225, 212, .64)),
-        radial-gradient(circle at 50% 20%, rgba(201, 168, 76, .18), transparent 44%);
+      width: min(100%, 1040px);
+      grid-template-columns: minmax(120px, .78fr) minmax(240px, 1.12fr) minmax(120px, .78fr);
+      gap: clamp(12px, 2vw, 24px);
+      align-items: center;
     }
 
-    .photo-frame__image {
+    .photo-spread::before {
       position: absolute;
-      inset: 0;
+      top: 50%;
+      left: 50%;
+      z-index: -1;
+      width: min(76vw, 720px);
+      aspect-ratio: 1;
+      content: "";
+      border: 1px solid rgba(200, 137, 122, .26);
+      border-radius: 999px;
+      transform: translate(-50%, -50%);
+    }
+
+    .photo-column {
+      display: grid;
+      gap: clamp(12px, 2vw, 22px);
+    }
+
+    .photo-card {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(26, 26, 26, .12);
+      border-radius: 6px;
+      background: var(--white-soft);
+      box-shadow: 0 28px 58px rgba(26, 26, 26, .08);
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 780ms var(--ease), transform 780ms var(--ease), box-shadow 780ms var(--ease);
+    }
+
+    .photo.is-visible .photo-card {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .photo.is-visible .photo-card:nth-of-type(1) {
+      transition-delay: 140ms;
+    }
+
+    .photo.is-visible .photo-card:nth-of-type(2) {
+      transition-delay: 260ms;
+    }
+
+    .photo-card img {
+      display: block;
       width: 100%;
       height: 100%;
       object-fit: cover;
-      opacity: 0;
-      transform: scale(1.04);
-      transition: opacity 1300ms var(--ease), transform 4000ms var(--ease);
+      filter: saturate(.94) contrast(1.04);
+      transform: scale(1.015);
+      transition: transform 4200ms var(--ease), filter 900ms var(--ease);
     }
 
-    .photo-frame__image.is-active {
-      opacity: .88;
+    .photo.is-visible .photo-card img {
       transform: scale(1);
     }
 
-    .rings {
-      position: relative;
-      z-index: 1;
-      width: 58%;
-      max-width: 230px;
-      color: var(--gold);
-      opacity: .92;
-      transition: opacity 700ms var(--ease);
+    .photo-card:hover {
+      box-shadow: 0 34px 72px rgba(26, 26, 26, .12);
     }
 
-    .has-photos .rings {
-      opacity: .24;
-      mix-blend-mode: screen;
+    .photo-card:hover img {
+      filter: saturate(1) contrast(1.06);
+    }
+
+    .photo-card--main {
+      aspect-ratio: 4 / 5.4;
+      transform: translateY(34px) scale(.98);
+    }
+
+    .photo.is-visible .photo-card--main {
+      transform: translateY(0) scale(1);
+      transition-delay: 80ms;
+    }
+
+    .photo-card--small {
+      aspect-ratio: 4 / 5.6;
+    }
+
+    .photo-card--wide {
+      aspect-ratio: 4 / 4.8;
+    }
+
+    .photo-card--left-top {
+      transform: translateY(30px) rotate(-2deg);
+    }
+
+    .photo-card--left-bottom {
+      transform: translateY(30px) rotate(1.5deg);
+    }
+
+    .photo-card--right-top {
+      transform: translateY(30px) rotate(1.6deg);
+    }
+
+    .photo-card--right-bottom {
+      transform: translateY(30px) rotate(-1deg);
+    }
+
+    .photo.is-visible .photo-card--left-top,
+    .photo.is-visible .photo-card--left-bottom,
+    .photo.is-visible .photo-card--right-top,
+    .photo.is-visible .photo-card--right-bottom {
+      transform: translateY(0) rotate(0);
     }
 
     .photo__caption {
       min-height: 1.8em;
       color: var(--muted);
       font-family: var(--serif);
-      font-size: clamp(1.45rem, 4vw, 3rem);
+      font-size: clamp(1.45rem, 3.8vw, 2.8rem);
       font-weight: 500;
       line-height: 1.1;
+      max-width: 740px;
     }
 
     .photo__caption::after {
@@ -649,8 +695,27 @@
         font-size: .98rem;
       }
 
-      .photo-frame {
-        width: min(84vw, 390px);
+      .photo-spread {
+        grid-template-columns: 1fr;
+        width: min(100%, 390px);
+      }
+
+      .photo-spread::before {
+        width: 96vw;
+      }
+
+      .photo-column {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .photo-card--main {
+        aspect-ratio: 4 / 5.2;
+        order: -1;
+      }
+
+      .photo-card--small,
+      .photo-card--wide {
+        aspect-ratio: 4 / 5.3;
       }
     }
 
@@ -780,17 +845,29 @@
 
     <section class="scene photo" id="scene-photo" data-scene>
       <div class="scene__inner photo__layout">
-        <p class="eyebrow">момент на память</p>
-        <div class="photo-frame" aria-label="Фотография Алексея и Елизаветы">
-          <div class="photo-frame__inside" data-photo-stage>
-            <svg class="rings" viewBox="0 0 260 180" role="img" aria-label="Два обручальных кольца">
-              <circle cx="104" cy="95" r="54" fill="none" stroke="currentColor" stroke-width="8"/>
-              <circle cx="156" cy="95" r="54" fill="none" stroke="currentColor" stroke-width="8"/>
-              <path d="M76 48 92 28h26l15 20M128 48l14-20h26l16 20" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" opacity=".72"/>
-            </svg>
+        <p class="eyebrow">кадры вашей истории</p>
+        <div class="photo-spread" aria-label="Свадебные фотографии Алексея и Елизаветы">
+          <div class="photo-column" aria-hidden="true">
+            <figure class="photo-card photo-card--small photo-card--left-top">
+              <img src="assets/photo-02.jpg" width="720" height="1280" alt="">
+            </figure>
+            <figure class="photo-card photo-card--wide photo-card--left-bottom">
+              <img src="assets/photo-07.jpg" width="720" height="1280" alt="">
+            </figure>
+          </div>
+          <figure class="photo-card photo-card--main">
+            <img src="assets/photo-01.jpg" width="720" height="1280" alt="Алексей и Елизавета в день свадьбы">
+          </figure>
+          <div class="photo-column" aria-hidden="true">
+            <figure class="photo-card photo-card--wide photo-card--right-top">
+              <img src="assets/photo-04.jpg" width="720" height="1280" alt="">
+            </figure>
+            <figure class="photo-card photo-card--small photo-card--right-bottom">
+              <img src="assets/photo-06.jpg" width="720" height="1280" alt="">
+            </figure>
           </div>
         </div>
-        <p class="photo__caption" data-caption-text="Тот самый день, который стал началом вашей семьи."></p>
+        <p class="photo__caption" data-caption-text="Пусть эти кадры всегда возвращают вас туда, где все стало семьей."></p>
       </div>
     </section>
 
@@ -809,10 +886,7 @@
       "use strict";
 
       const settings = {
-        publicDiskUrl: "https://disk.yandex.ru/d/c7La7AjJimPFYw",
-        photoPath: "/Алексей и Елизавета",
-        photoIndexes: [15, 17, 24, 31, 42],
-        captionDelay: 24
+        captionDelay: 12
       };
 
       const body = document.body;
@@ -821,12 +895,10 @@
       const cursor = document.querySelector(".cursor");
       const openingWord = document.querySelector(".opening__word");
       const photoSection = document.querySelector(".photo");
-      const photoStage = document.querySelector("[data-photo-stage]");
       const caption = document.querySelector("[data-caption-text]");
       const petalsCanvas = document.querySelector(".petals");
       const firefliesCanvas = document.querySelector(".fireflies");
 
-      let photoTimer = 0;
       let closingStarted = false;
 
       const wait = (ms) => new Promise((resolve) => window.setTimeout(resolve, ms));
@@ -865,7 +937,7 @@
           cursor.style.transform = `translate3d(${event.clientX}px, ${event.clientY}px, 0) translate(-50%, -50%)`;
         });
 
-        document.querySelectorAll("a, button, [role='button'], .photo-frame").forEach((item) => {
+        document.querySelectorAll("a, button, [role='button'], .photo-card").forEach((item) => {
           item.addEventListener("pointerenter", () => cursor.classList.add("is-active"));
           item.addEventListener("pointerleave", () => cursor.classList.remove("is-active"));
         });
@@ -1003,58 +1075,6 @@
         animate();
       };
 
-      const loadRemotePreviews = async () => {
-        try {
-          const endpoint = new URL("https://cloud-api.yandex.net/v1/disk/public/resources");
-          endpoint.searchParams.set("public_key", settings.publicDiskUrl);
-          endpoint.searchParams.set("path", settings.photoPath);
-          endpoint.searchParams.set("limit", "80");
-          endpoint.searchParams.set("preview_size", "XL");
-          endpoint.searchParams.set("preview_crop", "false");
-
-          const response = await fetch(endpoint);
-          if (!response.ok) throw new Error("Превью недоступны");
-
-          const data = await response.json();
-          const items = data?._embedded?.items || [];
-          const selected = settings.photoIndexes
-            .map((index) => items[index - 1]?.preview)
-            .filter(Boolean);
-
-          if (!selected.length) return;
-
-          const fragment = document.createDocumentFragment();
-          selected.forEach((src, index) => {
-            const image = new Image();
-            image.className = `photo-frame__image${index === 0 ? " is-active" : ""}`;
-            image.alt = "Свадебный кадр Алексея и Елизаветы";
-            image.decoding = "async";
-            image.loading = "eager";
-            image.src = src;
-            fragment.append(image);
-          });
-
-          photoStage.prepend(fragment);
-          photoStage.classList.add("has-photos");
-          startPhotoLoop();
-        } catch {
-          photoStage.classList.remove("has-photos");
-        }
-      };
-
-      const startPhotoLoop = () => {
-        const images = [...document.querySelectorAll(".photo-frame__image")];
-        if (images.length < 2) return;
-
-        let activeIndex = 0;
-        window.clearInterval(photoTimer);
-        photoTimer = window.setInterval(() => {
-          images[activeIndex].classList.remove("is-active");
-          activeIndex = (activeIndex + 1) % images.length;
-          images[activeIndex].classList.add("is-active");
-        }, 4200);
-      };
-
       window.addEventListener("scroll", updateProgress, { passive: true });
       window.addEventListener("resize", updateProgress);
 
@@ -1063,7 +1083,6 @@
         setupObserver();
         setupPetals();
         updateProgress();
-        loadRemotePreviews();
 
         await wait(320);
         body.classList.add("is-loaded");

@@ -1,0 +1,1076 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#F5F0E8">
+  <title>Алексей & Елизавета — годовщина</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cream: #f5f0e8;
+      --cream-2: #ebe1d4;
+      --ink: #1a1a1a;
+      --muted: #746d64;
+      --rose: #c8897a;
+      --gold: #c9a84c;
+      --white-soft: #fffaf1;
+      --ease: cubic-bezier(.22, 1, .36, 1);
+      --ease-soft: cubic-bezier(.16, 1, .3, 1);
+      --fast: 360ms;
+      --medium: 600ms;
+      --slow: 1200ms;
+      --page-pad: clamp(22px, 5vw, 72px);
+      --serif: "Cormorant Garamond", Georgia, serif;
+      --sans: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-height: 100%;
+      scroll-behavior: smooth;
+      background: var(--cream);
+    }
+
+    body {
+      min-height: 100%;
+      margin: 0;
+      color: var(--ink);
+      background:
+        linear-gradient(90deg, rgba(26, 26, 26, .035) 1px, transparent 1px),
+        linear-gradient(180deg, rgba(26, 26, 26, .025) 1px, transparent 1px),
+        var(--cream);
+      background-size: 84px 84px;
+      font-family: var(--sans);
+      font-weight: 300;
+      letter-spacing: 0;
+      cursor: none;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      pointer-events: none;
+      content: "";
+      background: var(--cream);
+      opacity: 1;
+      transition: opacity 900ms var(--ease-soft), visibility 900ms var(--ease-soft);
+      visibility: visible;
+    }
+
+    body.is-loaded::before {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    ::selection {
+      color: var(--cream);
+      background: var(--rose);
+    }
+
+    .progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 30;
+      width: 100%;
+      height: 2px;
+      background: rgba(26, 26, 26, .08);
+    }
+
+    .progress__bar {
+      display: block;
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, var(--rose), var(--gold));
+      transform-origin: left center;
+    }
+
+    .cursor {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 60;
+      width: 14px;
+      height: 14px;
+      border: 1px solid rgba(26, 26, 26, .46);
+      border-radius: 999px;
+      pointer-events: none;
+      opacity: 0;
+      transform: translate3d(-50%, -50%, 0) scale(.7);
+      transition: width var(--fast) var(--ease), height var(--fast) var(--ease), opacity var(--fast) var(--ease), border-color var(--fast) var(--ease), background var(--fast) var(--ease);
+      mix-blend-mode: multiply;
+    }
+
+    .cursor::after {
+      position: absolute;
+      inset: 4px;
+      content: "";
+      border-radius: inherit;
+      background: var(--rose);
+    }
+
+    .cursor.is-visible {
+      opacity: 1;
+    }
+
+    .cursor.is-active {
+      width: 42px;
+      height: 42px;
+      border-color: rgba(200, 137, 122, .55);
+      background: rgba(200, 137, 122, .08);
+    }
+
+    .scene {
+      position: relative;
+      display: grid;
+      min-height: 100svh;
+      place-items: center;
+      padding: var(--page-pad);
+      isolation: isolate;
+      overflow: hidden;
+    }
+
+    .scene__inner {
+      position: relative;
+      z-index: 2;
+      width: min(100%, 1120px);
+      margin: 0 auto;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity var(--medium) var(--ease), transform var(--medium) var(--ease);
+    }
+
+    body.is-loaded .scene.is-visible .scene__inner {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      margin: 0 0 26px;
+      color: var(--muted);
+      font-size: clamp(.72rem, 1.5vw, .82rem);
+      font-weight: 400;
+      line-height: 1;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      width: 46px;
+      height: 1px;
+      content: "";
+      background: currentColor;
+      opacity: .45;
+      transform: scaleX(0);
+      transform-origin: left center;
+      transition: transform 900ms var(--ease) 200ms;
+    }
+
+    .scene.is-visible .eyebrow::before {
+      transform: scaleX(1);
+    }
+
+    h1,
+    h2,
+    p {
+      margin: 0;
+    }
+
+    .opening {
+      text-align: center;
+    }
+
+    .petals {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .opening__word {
+      min-height: .95em;
+      font-family: var(--serif);
+      font-size: clamp(4.2rem, 15vw, 13rem);
+      font-weight: 500;
+      line-height: .85;
+    }
+
+    .opening__word::after {
+      display: inline-block;
+      width: .06em;
+      height: .75em;
+      margin-left: .05em;
+      content: "";
+      background: var(--rose);
+      opacity: 0;
+      transform: translateY(.08em);
+      animation: caret 900ms steps(1) infinite;
+    }
+
+    .is-typed .opening__word::after {
+      display: none;
+    }
+
+    .opening__names {
+      margin-top: clamp(22px, 5vw, 44px);
+      color: var(--muted);
+      font-size: clamp(.9rem, 2vw, 1.05rem);
+      font-weight: 400;
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 900ms var(--ease) 1300ms, transform 900ms var(--ease) 1300ms;
+    }
+
+    body.is-loaded .opening.is-visible .opening__names {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .scroll-mark {
+      position: absolute;
+      right: clamp(18px, 4vw, 52px);
+      bottom: clamp(18px, 4vw, 52px);
+      width: 1px;
+      height: 74px;
+      overflow: hidden;
+      background: rgba(26, 26, 26, .12);
+    }
+
+    .scroll-mark::before {
+      display: block;
+      width: 100%;
+      height: 38%;
+      content: "";
+      background: var(--ink);
+      animation: scrollLine 2100ms var(--ease) infinite;
+    }
+
+    .date {
+      align-items: center;
+      text-align: left;
+    }
+
+    .date__number {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      z-index: 0;
+      color: rgba(26, 26, 26, .045);
+      font-family: var(--serif);
+      font-size: clamp(20rem, 54vw, 44rem);
+      font-weight: 700;
+      line-height: .7;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      user-select: none;
+    }
+
+    .date__content {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      gap: clamp(22px, 4vw, 40px);
+      max-width: 860px;
+    }
+
+    .date__title {
+      font-family: var(--serif);
+      font-size: clamp(3.1rem, 10vw, 9rem);
+      font-weight: 500;
+      line-height: .86;
+    }
+
+    .date__rule {
+      display: block;
+      width: min(78vw, 720px);
+      height: 1px;
+      background: linear-gradient(90deg, var(--ink), rgba(26, 26, 26, 0));
+      transform: scaleX(0);
+      transform-origin: left center;
+      transition: transform 1300ms var(--ease) 260ms;
+    }
+
+    .date.is-visible .date__rule {
+      transform: scaleX(1);
+    }
+
+    .date__phrase {
+      max-width: 620px;
+      color: var(--muted);
+      font-family: var(--serif);
+      font-size: clamp(1.7rem, 5vw, 4.2rem);
+      font-weight: 500;
+      line-height: .98;
+    }
+
+    .message__inner {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(180px, 320px);
+      gap: clamp(32px, 7vw, 96px);
+      align-items: center;
+    }
+
+    .message__copy {
+      display: grid;
+      gap: clamp(22px, 4vw, 34px);
+      max-width: 760px;
+    }
+
+    .message__copy p {
+      color: var(--ink);
+      font-family: var(--serif);
+      font-size: clamp(2rem, 5.8vw, 5.4rem);
+      font-weight: 500;
+      line-height: .96;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity var(--medium) var(--ease), transform var(--medium) var(--ease);
+    }
+
+    .message.is-visible .message__copy p {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .message.is-visible .message__copy p:nth-child(1) {
+      transition-delay: 160ms;
+    }
+
+    .message.is-visible .message__copy p:nth-child(2) {
+      transition-delay: 360ms;
+    }
+
+    .message.is-visible .message__copy p:nth-child(3) {
+      transition-delay: 560ms;
+    }
+
+    .message__note {
+      max-width: 420px;
+      color: var(--muted);
+      font-size: clamp(.98rem, 2vw, 1.12rem);
+      font-weight: 300;
+      line-height: 1.75;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity var(--medium) var(--ease) 780ms, transform var(--medium) var(--ease) 780ms;
+    }
+
+    .message.is-visible .message__note {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .heart-wrap {
+      display: grid;
+      place-items: center;
+      min-height: 280px;
+    }
+
+    .heart {
+      width: clamp(132px, 20vw, 230px);
+      color: var(--rose);
+      filter: drop-shadow(0 22px 44px rgba(200, 137, 122, .18));
+      opacity: 0;
+      transform: translateY(24px) scale(.94);
+      transition: opacity 900ms var(--ease) 360ms, transform 900ms var(--ease) 360ms;
+      animation: pulse 3800ms var(--ease) infinite;
+    }
+
+    .message.is-visible .heart {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    .photo {
+      text-align: center;
+    }
+
+    .photo__layout {
+      display: grid;
+      gap: clamp(24px, 5vw, 42px);
+      place-items: center;
+    }
+
+    .photo-frame {
+      position: relative;
+      width: min(72vw, 430px);
+      aspect-ratio: 1;
+      padding: clamp(14px, 2.8vw, 22px);
+      border-radius: 6px;
+    }
+
+    .photo-frame::before,
+    .photo-frame::after {
+      position: absolute;
+      inset: 0;
+      content: "";
+      border-radius: 6px;
+      pointer-events: none;
+    }
+
+    .photo-frame::before {
+      border: 1px solid rgba(26, 26, 26, .16);
+    }
+
+    .photo-frame::after {
+      border: 1px dashed rgba(200, 137, 122, .75);
+      animation: frameBreath 5200ms linear infinite;
+    }
+
+    .photo-frame__inside {
+      position: relative;
+      display: grid;
+      width: 100%;
+      height: 100%;
+      place-items: center;
+      overflow: hidden;
+      border-radius: 4px;
+      background:
+        linear-gradient(135deg, rgba(255, 250, 241, .82), rgba(235, 225, 212, .64)),
+        radial-gradient(circle at 50% 20%, rgba(201, 168, 76, .18), transparent 44%);
+    }
+
+    .photo-frame__image {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transform: scale(1.04);
+      transition: opacity 1300ms var(--ease), transform 4000ms var(--ease);
+    }
+
+    .photo-frame__image.is-active {
+      opacity: .88;
+      transform: scale(1);
+    }
+
+    .rings {
+      position: relative;
+      z-index: 1;
+      width: 58%;
+      max-width: 230px;
+      color: var(--gold);
+      opacity: .92;
+      transition: opacity 700ms var(--ease);
+    }
+
+    .has-photos .rings {
+      opacity: .24;
+      mix-blend-mode: screen;
+    }
+
+    .photo__caption {
+      min-height: 1.8em;
+      color: var(--muted);
+      font-family: var(--serif);
+      font-size: clamp(1.45rem, 4vw, 3rem);
+      font-weight: 500;
+      line-height: 1.1;
+    }
+
+    .photo__caption::after {
+      display: inline-block;
+      width: .08em;
+      height: .82em;
+      margin-left: .06em;
+      content: "";
+      background: var(--rose);
+      transform: translateY(.1em);
+      animation: caret 900ms steps(1) infinite;
+    }
+
+    .photo.is-caption-done .photo__caption::after {
+      display: none;
+    }
+
+    .closing {
+      color: var(--cream);
+      background: var(--ink);
+    }
+
+    .closing::before {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      content: "";
+      background:
+        linear-gradient(180deg, rgba(200, 137, 122, .08), transparent 38%),
+        radial-gradient(circle at 50% 100%, rgba(201, 168, 76, .13), transparent 42%);
+      opacity: .8;
+    }
+
+    .fireflies {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      width: 100%;
+      height: 100%;
+      opacity: .9;
+    }
+
+    .closing__inner {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+    }
+
+    .closing__line {
+      color: rgba(245, 240, 232, .74);
+      font-family: var(--serif);
+      font-size: clamp(1.8rem, 4.8vw, 4.4rem);
+      font-weight: 500;
+      line-height: 1.05;
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity 1800ms var(--ease) 220ms, transform 1800ms var(--ease) 220ms;
+    }
+
+    .closing.is-visible .closing__line {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .closing__initials {
+      margin-top: clamp(24px, 6vw, 54px);
+      color: var(--cream);
+      font-family: var(--serif);
+      font-size: clamp(5rem, 17vw, 15rem);
+      font-weight: 600;
+      line-height: .78;
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 1600ms var(--ease) 850ms, transform 1600ms var(--ease) 850ms;
+    }
+
+    .closing.is-visible .closing__initials {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .closing__amp {
+      color: var(--gold);
+      text-shadow: 0 0 22px rgba(201, 168, 76, .32);
+      animation: glow 4200ms var(--ease) infinite;
+    }
+
+    .closing__sign {
+      margin-top: clamp(28px, 6vw, 54px);
+      color: rgba(245, 240, 232, .56);
+      font-size: clamp(.9rem, 1.8vw, 1.05rem);
+      font-weight: 400;
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 1200ms var(--ease) 1350ms, transform 1200ms var(--ease) 1350ms;
+    }
+
+    .closing.is-visible .closing__sign {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @keyframes caret {
+      0%, 45% { opacity: 1; }
+      46%, 100% { opacity: 0; }
+    }
+
+    @keyframes scrollLine {
+      0% { transform: translateY(-100%); }
+      48%, 100% { transform: translateY(260%); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { filter: drop-shadow(0 22px 44px rgba(200, 137, 122, .16)); }
+      50% { filter: drop-shadow(0 28px 58px rgba(200, 137, 122, .28)); }
+    }
+
+    @keyframes frameBreath {
+      0% { clip-path: inset(0 0 96% 0); }
+      25% { clip-path: inset(0 0 0 96%); }
+      50% { clip-path: inset(96% 0 0 0); }
+      75% { clip-path: inset(0 96% 0 0); }
+      100% { clip-path: inset(0 0 96% 0); }
+    }
+
+    @keyframes glow {
+      0%, 100% { text-shadow: 0 0 20px rgba(201, 168, 76, .28); }
+      50% { text-shadow: 0 0 40px rgba(201, 168, 76, .54); }
+    }
+
+    @media (max-width: 760px) {
+      body {
+        cursor: auto;
+        background-size: 58px 58px;
+      }
+
+      .cursor {
+        display: none;
+      }
+
+      .scene {
+        min-height: 100svh;
+        padding: clamp(20px, 6vw, 32px);
+      }
+
+      .opening__word {
+        font-size: clamp(4rem, 21vw, 7rem);
+      }
+
+      .date__content {
+        gap: 24px;
+      }
+
+      .message__inner {
+        grid-template-columns: 1fr;
+      }
+
+      .heart-wrap {
+        min-height: 160px;
+        order: -1;
+      }
+
+      .message__copy p {
+        font-size: clamp(2.35rem, 12vw, 4.2rem);
+      }
+
+      .message__note {
+        font-size: .98rem;
+      }
+
+      .photo-frame {
+        width: min(84vw, 390px);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+      }
+
+      .scene__inner,
+      .message__copy p,
+      .message__note,
+      .heart,
+      .closing__line,
+      .closing__initials,
+      .closing__sign {
+        opacity: 1 !important;
+        transform: none !important;
+      }
+    }
+
+    @media print {
+      @page {
+        size: A5 portrait;
+        margin: 12mm;
+      }
+
+      html,
+      body {
+        background: #fffaf1 !important;
+        color: #1a1a1a !important;
+      }
+
+      body {
+        cursor: auto;
+      }
+
+      body::before,
+      .progress,
+      .cursor,
+      .petals,
+      .fireflies,
+      .scroll-mark {
+        display: none !important;
+      }
+
+      .scene {
+        min-height: 180mm;
+        page-break-after: always;
+        break-after: page;
+        padding: 8mm 0;
+        overflow: visible;
+        background: transparent !important;
+        color: #1a1a1a !important;
+      }
+
+      .scene__inner,
+      .message__copy p,
+      .message__note,
+      .heart,
+      .closing__line,
+      .closing__initials,
+      .closing__sign {
+        opacity: 1 !important;
+        transform: none !important;
+      }
+
+      .date__number {
+        opacity: .18;
+      }
+
+      .closing__line,
+      .closing__initials,
+      .closing__sign {
+        color: #1a1a1a !important;
+        text-shadow: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="progress" aria-hidden="true"><span class="progress__bar"></span></div>
+  <div class="cursor" aria-hidden="true"></div>
+
+  <main>
+    <section class="scene opening" id="scene-opening" data-scene>
+      <canvas class="petals" aria-hidden="true"></canvas>
+      <div class="scene__inner">
+        <h1 class="opening__word" data-type-text="Сегодня..."></h1>
+        <p class="opening__names">Алексей & Елизавета</p>
+      </div>
+      <div class="scroll-mark" aria-hidden="true"></div>
+    </section>
+
+    <section class="scene date" id="scene-date" data-scene>
+      <div class="date__number" aria-hidden="true">1</div>
+      <div class="scene__inner date__content">
+        <p class="eyebrow">первая годовщина</p>
+        <h2 class="date__title">5 мая<br>2025</h2>
+        <span class="date__rule" aria-hidden="true"></span>
+        <p class="date__phrase">Год за годом. Рядом.</p>
+      </div>
+    </section>
+
+    <section class="scene message" id="scene-message" data-scene>
+      <div class="scene__inner message__inner">
+        <div>
+          <div class="message__copy" aria-label="Поздравление">
+            <p>Вы выбрали друг друга.</p>
+            <p>И каждый день заново подтверждаете этот выбор.</p>
+            <p>Пусть ваш дом всегда будет местом, где спокойно, тепло и по-настоящему вместе.</p>
+          </div>
+          <p class="message__note">С первой годовщиной свадьбы. Берегите эту нежность, смейтесь громче, мечтайте смелее и оставайтесь той самой командой, на которую приятно смотреть с любовью и восхищением.</p>
+        </div>
+        <div class="heart-wrap" aria-hidden="true">
+          <svg class="heart" viewBox="0 0 180 160" role="img">
+            <path d="M89.7 143.6C59.1 118.1 24 91.7 24 55.2 24 34.3 39.7 19 60.4 19c12.7 0 23.8 6.5 29.6 16.8C95.8 25.5 106.9 19 119.6 19 140.3 19 156 34.3 156 55.2c0 36.5-35.1 62.9-65.7 88.4a.47.47 0 0 1-.6 0Z" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M48 57.8c0-10.5 7.3-18.8 17.7-20.2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".42"/>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <section class="scene photo" id="scene-photo" data-scene>
+      <div class="scene__inner photo__layout">
+        <p class="eyebrow">момент на память</p>
+        <div class="photo-frame" aria-label="Фотография Алексея и Елизаветы">
+          <div class="photo-frame__inside" data-photo-stage>
+            <svg class="rings" viewBox="0 0 260 180" role="img" aria-label="Два обручальных кольца">
+              <circle cx="104" cy="95" r="54" fill="none" stroke="currentColor" stroke-width="8"/>
+              <circle cx="156" cy="95" r="54" fill="none" stroke="currentColor" stroke-width="8"/>
+              <path d="M76 48 92 28h26l15 20M128 48l14-20h26l16 20" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" opacity=".72"/>
+            </svg>
+          </div>
+        </div>
+        <p class="photo__caption" data-caption-text="Тот самый день, который стал началом вашей семьи."></p>
+      </div>
+    </section>
+
+    <section class="scene closing" id="scene-closing" data-scene>
+      <canvas class="fireflies" aria-hidden="true"></canvas>
+      <div class="scene__inner closing__inner">
+        <p class="closing__line">С любовью и восхищением</p>
+        <p class="closing__initials">А <span class="closing__amp">&</span> Е</p>
+        <p class="closing__sign">С любовью, Женя</p>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    (() => {
+      "use strict";
+
+      const settings = {
+        publicDiskUrl: "https://disk.yandex.ru/d/c7La7AjJimPFYw",
+        photoPath: "/Алексей и Елизавета",
+        photoIndexes: [15, 17, 24, 31, 42],
+        captionDelay: 24
+      };
+
+      const body = document.body;
+      const scenes = [...document.querySelectorAll("[data-scene]")];
+      const progressBar = document.querySelector(".progress__bar");
+      const cursor = document.querySelector(".cursor");
+      const openingWord = document.querySelector(".opening__word");
+      const photoSection = document.querySelector(".photo");
+      const photoStage = document.querySelector("[data-photo-stage]");
+      const caption = document.querySelector("[data-caption-text]");
+      const petalsCanvas = document.querySelector(".petals");
+      const firefliesCanvas = document.querySelector(".fireflies");
+
+      let photoTimer = 0;
+      let closingStarted = false;
+
+      const wait = (ms) => new Promise((resolve) => window.setTimeout(resolve, ms));
+
+      const typeInto = async (node, text, delay = 72) => {
+        node.textContent = "";
+        for (const letter of text) {
+          node.textContent += letter;
+          await wait(delay);
+        }
+        node.closest(".scene")?.classList.add("is-typed");
+      };
+
+      const revealCaption = async () => {
+        if (photoSection.classList.contains("is-caption-done")) return;
+        caption.textContent = "";
+        const text = caption.dataset.captionText || "";
+        for (const letter of text) {
+          caption.textContent += letter;
+          await wait(settings.captionDelay);
+        }
+        photoSection.classList.add("is-caption-done");
+      };
+
+      const updateProgress = () => {
+        const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = scrollable <= 0 ? 1 : window.scrollY / scrollable;
+        progressBar.style.width = `${Math.min(100, Math.max(0, progress * 100))}%`;
+      };
+
+      const setupCursor = () => {
+        if (!window.matchMedia("(pointer: fine)").matches) return;
+
+        window.addEventListener("pointermove", (event) => {
+          cursor.classList.add("is-visible");
+          cursor.style.transform = `translate3d(${event.clientX}px, ${event.clientY}px, 0) translate(-50%, -50%)`;
+        });
+
+        document.querySelectorAll("a, button, [role='button'], .photo-frame").forEach((item) => {
+          item.addEventListener("pointerenter", () => cursor.classList.add("is-active"));
+          item.addEventListener("pointerleave", () => cursor.classList.remove("is-active"));
+        });
+
+        document.addEventListener("pointerleave", () => cursor.classList.remove("is-visible"));
+      };
+
+      const setupObserver = () => {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+
+            entry.target.classList.add("is-visible");
+
+            if (entry.target.id === "scene-photo") {
+              revealCaption();
+            }
+
+            if (entry.target.id === "scene-closing" && !closingStarted) {
+              closingStarted = true;
+              burstFireflies();
+            }
+          });
+        }, { threshold: .42 });
+
+        scenes.forEach((scene) => observer.observe(scene));
+      };
+
+      const setupPetals = () => {
+        const context = petalsCanvas.getContext("2d");
+        const petals = [];
+        let width = 0;
+        let height = 0;
+        let raf = 0;
+
+        const resize = () => {
+          const scale = Math.min(window.devicePixelRatio || 1, 2);
+          width = petalsCanvas.offsetWidth;
+          height = petalsCanvas.offsetHeight;
+          petalsCanvas.width = Math.floor(width * scale);
+          petalsCanvas.height = Math.floor(height * scale);
+          context.setTransform(scale, 0, 0, scale, 0, 0);
+        };
+
+        const createPetal = (firstRun = false) => ({
+          x: Math.random() * width,
+          y: firstRun ? Math.random() * height : -30,
+          size: 5 + Math.random() * 11,
+          speed: .18 + Math.random() * .46,
+          drift: -.18 + Math.random() * .36,
+          turn: Math.random() * Math.PI * 2,
+          alpha: .16 + Math.random() * .34,
+          hue: Math.random() > .5 ? "200, 137, 122" : "201, 168, 76"
+        });
+
+        const draw = () => {
+          context.clearRect(0, 0, width, height);
+
+          petals.forEach((petal, index) => {
+            petal.y += petal.speed;
+            petal.x += Math.sin(petal.turn) * .22 + petal.drift;
+            petal.turn += .012;
+
+            if (petal.y > height + 40 || petal.x < -60 || petal.x > width + 60) {
+              petals[index] = createPetal();
+              return;
+            }
+
+            context.save();
+            context.translate(petal.x, petal.y);
+            context.rotate(Math.sin(petal.turn) * .8);
+            context.beginPath();
+            context.ellipse(0, 0, petal.size * .62, petal.size, .65, 0, Math.PI * 2);
+            context.fillStyle = `rgba(${petal.hue}, ${petal.alpha})`;
+            context.fill();
+            context.restore();
+          });
+
+          raf = window.requestAnimationFrame(draw);
+        };
+
+        resize();
+        for (let i = 0; i < 58; i += 1) petals.push(createPetal(true));
+        draw();
+        window.addEventListener("resize", resize);
+
+        return () => window.cancelAnimationFrame(raf);
+      };
+
+      const burstFireflies = () => {
+        const context = firefliesCanvas.getContext("2d");
+        const particles = [];
+        const scale = Math.min(window.devicePixelRatio || 1, 2);
+        const width = firefliesCanvas.offsetWidth;
+        const height = firefliesCanvas.offsetHeight;
+        let frame = 0;
+
+        firefliesCanvas.width = Math.floor(width * scale);
+        firefliesCanvas.height = Math.floor(height * scale);
+        context.setTransform(scale, 0, 0, scale, 0, 0);
+
+        for (let i = 0; i < 86; i += 1) {
+          const angle = Math.random() * Math.PI * 2;
+          const power = 1.2 + Math.random() * 4.5;
+          particles.push({
+            x: width / 2,
+            y: height * .52,
+            vx: Math.cos(angle) * power,
+            vy: Math.sin(angle) * power - 1.4,
+            life: 90 + Math.random() * 80,
+            size: 1.1 + Math.random() * 2.6,
+            warm: Math.random() > .34
+          });
+        }
+
+        const animate = () => {
+          frame += 1;
+          context.clearRect(0, 0, width, height);
+
+          particles.forEach((particle) => {
+            particle.x += particle.vx;
+            particle.y += particle.vy;
+            particle.vy += .025;
+            particle.vx *= .987;
+            const alpha = Math.max(0, 1 - frame / particle.life);
+            context.beginPath();
+            context.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+            context.fillStyle = particle.warm ? `rgba(201, 168, 76, ${alpha * .72})` : `rgba(245, 240, 232, ${alpha * .52})`;
+            context.fill();
+          });
+
+          if (frame < 150) window.requestAnimationFrame(animate);
+        };
+
+        animate();
+      };
+
+      const loadRemotePreviews = async () => {
+        try {
+          const endpoint = new URL("https://cloud-api.yandex.net/v1/disk/public/resources");
+          endpoint.searchParams.set("public_key", settings.publicDiskUrl);
+          endpoint.searchParams.set("path", settings.photoPath);
+          endpoint.searchParams.set("limit", "80");
+          endpoint.searchParams.set("preview_size", "XL");
+          endpoint.searchParams.set("preview_crop", "false");
+
+          const response = await fetch(endpoint);
+          if (!response.ok) throw new Error("Превью недоступны");
+
+          const data = await response.json();
+          const items = data?._embedded?.items || [];
+          const selected = settings.photoIndexes
+            .map((index) => items[index - 1]?.preview)
+            .filter(Boolean);
+
+          if (!selected.length) return;
+
+          const fragment = document.createDocumentFragment();
+          selected.forEach((src, index) => {
+            const image = new Image();
+            image.className = `photo-frame__image${index === 0 ? " is-active" : ""}`;
+            image.alt = "Свадебный кадр Алексея и Елизаветы";
+            image.decoding = "async";
+            image.loading = "eager";
+            image.src = src;
+            fragment.append(image);
+          });
+
+          photoStage.prepend(fragment);
+          photoStage.classList.add("has-photos");
+          startPhotoLoop();
+        } catch {
+          photoStage.classList.remove("has-photos");
+        }
+      };
+
+      const startPhotoLoop = () => {
+        const images = [...document.querySelectorAll(".photo-frame__image")];
+        if (images.length < 2) return;
+
+        let activeIndex = 0;
+        window.clearInterval(photoTimer);
+        photoTimer = window.setInterval(() => {
+          images[activeIndex].classList.remove("is-active");
+          activeIndex = (activeIndex + 1) % images.length;
+          images[activeIndex].classList.add("is-active");
+        }, 4200);
+      };
+
+      window.addEventListener("scroll", updateProgress, { passive: true });
+      window.addEventListener("resize", updateProgress);
+
+      document.addEventListener("DOMContentLoaded", async () => {
+        setupCursor();
+        setupObserver();
+        setupPetals();
+        updateProgress();
+        loadRemotePreviews();
+
+        await wait(320);
+        body.classList.add("is-loaded");
+        await wait(360);
+        await typeInto(openingWord, openingWord.dataset.typeText || "Сегодня...");
+      });
+    })();
+  </script>
+</body>
+</html>
